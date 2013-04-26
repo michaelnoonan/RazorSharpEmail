@@ -1,0 +1,13 @@
+Test Email: REF123456
+---------------------------------
+<h1 style="color: red">Alert!!!</h1>
+<h3>Your reference: REF123456</h3>
+<p>Dear Michael,</p>
+<p>Hello World!</p>
+<p>Thanks!</p>
+---------------------------------
+Alert!!!
+Your reference: REF123456
+Dear Michael,
+Hello World!
+Thanks!

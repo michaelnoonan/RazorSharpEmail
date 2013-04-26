@@ -1,0 +1,7 @@
+@using Email.Models
+@inherits RazorSharpEmail.EmailTemplate<SimpleEmailModel>
+Alert!!!
+Your reference: @(string.IsNullOrWhiteSpace(Model.ReferenceNumber) == false ? Model.ReferenceNumber : "None specified")
+Dear @(string.IsNullOrWhiteSpace(Model.RecipientFirstName) == false ? Model.RecipientFirstName : "Client"),
+@Model.Message
+Thanks!
