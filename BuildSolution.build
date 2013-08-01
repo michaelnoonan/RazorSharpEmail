@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="default">
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="default">
   <PropertyGroup>
     <BaseDir>$(MSBuildProjectDirectory)\Source\</BaseDir>
     <Configuration Condition="'$(Configuration)'==''" >Release</Configuration>
@@ -19,17 +19,17 @@
  
   <Target Name="Package">
     <ItemGroup>
-      <MainBinaries Include="$(BaseDir)RazorSharpEmail\bin\$(Configuration)\**\*.*" />
+      <MainBinaries Include="$(BaseDir)RazorSharpEmail\bin\$(Configuration)\**\RazorSharpEmail.*" />
     </ItemGroup>
  
     <!-- First copy the nuspec template files to the package dir -->
     <Copy SourceFiles="$(BaseDir)\RazorSharpEmail.nuspec" DestinationFolder="$(PackageDir)temp\RazorSharpEmail" />
  
     <!-- Copy the source files to the package dir -->
-    <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageDir)temp\RazorSharpEmail\lib\NET35%(RecursiveDir)" />
+    <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageDir)temp\RazorSharpEmail\lib\net45%(RecursiveDir)" />
  
     <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-    <GetAssemblyIdentity AssemblyFiles="$(PackageDir)temp\RazorSharpEmail\lib\NET35\RazorSharpEmail.dll">
+    <GetAssemblyIdentity AssemblyFiles="$(PackageDir)temp\RazorSharpEmail\lib\net45\RazorSharpEmail.dll">
       <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
     </GetAssemblyIdentity>
  
