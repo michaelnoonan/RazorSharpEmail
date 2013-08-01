@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Castle.Core.Logging;
 using RazorEngine.Templating;
 
 namespace RazorSharpEmail
