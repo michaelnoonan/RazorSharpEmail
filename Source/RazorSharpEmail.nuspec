@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>RazorSharpEmail</id>
+    <version>0.0.0.0</version>
+    <authors>Michael Noonan</authors>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Razor Sharp email harness around the Razor engine that allows convention based transforms and language scoping.</description>
+    <summary>Razor Sharp email harness around the Razor engine that allows convention based transforms and language scoping</summary>
+    <language>en-US</language>
+    <title>Device Detection</title>
+    <projectUrl>https://github.com/michaelnoonan/RazorSharpEmail</projectUrl>
+  </metadata>
+</package>
