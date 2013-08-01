@@ -4,7 +4,7 @@
     <Configuration Condition="'$(Configuration)'==''" >Release</Configuration>
     <BuildDir>$(BaseDir)build\</BuildDir>
     <PackageDir>$(BuildDir)Packages\</PackageDir>
-    <SolutionFile>$(BaseDir)ZeroProximity.DeviceDetection.sln</SolutionFile>
+    <SolutionFile>$(BaseDir)RazorSharpEmail.sln</SolutionFile>
     <MSBuildExtensions>$(MSBuildProjectDirectory)\Source\build\MSBuild.Community.Tasks.dll</MSBuildExtensions>
     <Version Condition="$(Version)==''">0.0.0.0</Version>
   </PropertyGroup>
@@ -19,28 +19,28 @@
  
   <Target Name="Package">
     <ItemGroup>
-      <MainBinaries Include="$(BaseDir)ZeroProximity.DeviceDetection\bin\$(Configuration)\**\*.*" />
+      <MainBinaries Include="$(BaseDir)RazorSharpEmail\bin\$(Configuration)\**\*.*" />
     </ItemGroup>
  
     <!-- First copy the nuspec template files to the package dir -->
-    <Copy SourceFiles="$(BaseDir)\ZeroProximity.DeviceDetection.nuspec" DestinationFolder="$(PackageDir)temp\ZeroProximityDeviceDetection" />
+    <Copy SourceFiles="$(BaseDir)\RazorSharpEmail.nuspec" DestinationFolder="$(PackageDir)temp\RazorSharpEmail" />
  
     <!-- Copy the source files to the package dir -->
-    <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageDir)temp\ZeroProximityDeviceDetection\lib\NET35%(RecursiveDir)" />
+    <Copy SourceFiles="@(MainBinaries)" DestinationFolder="$(PackageDir)temp\RazorSharpEmail\lib\NET35%(RecursiveDir)" />
  
     <!-- Get the version number of the main FV assembly to insert into the nuspec files -->
-    <GetAssemblyIdentity AssemblyFiles="$(PackageDir)temp\ZeroProximityDeviceDetection\lib\NET35\ZeroProximity.DeviceDetection.dll">
+    <GetAssemblyIdentity AssemblyFiles="$(PackageDir)temp\RazorSharpEmail\lib\NET35\RazorSharpEmail.dll">
       <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
     </GetAssemblyIdentity>
  
     <!-- insert the version number into the nuspec files -->
     <XmlUpdate
       Namespace="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"
-      XmlFileName="$(PackageDir)temp\ZeroProximityDeviceDetection\ZeroProximity.DeviceDetection.nuspec"
+      XmlFileName="$(PackageDir)temp\RazorSharpEmail\RazorSharpEmail.nuspec"
       XPath="/package/metadata/version"
       Value="%(AsmInfo.Version)" />
  
     <Exec WorkingDirectory="$(BuildDir)Packages" 
-          Command="$(MSBuildProjectDirectory)\Lib\Nuget\nuget.exe pack $(PackageDir)temp\ZeroProximityDeviceDetection\ZeroProximity.DeviceDetection.nuspec" />
+          Command="$(MSBuildProjectDirectory)\Lib\Nuget\nuget.exe pack $(PackageDir)temp\RazorSharpEmail\RazorSharpEmail.nuspec" />
   </Target>
 </Project>
