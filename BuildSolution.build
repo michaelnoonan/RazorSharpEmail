@@ -2,10 +2,10 @@
   <PropertyGroup>
     <BaseDir>$(MSBuildProjectDirectory)\Source\</BaseDir>
     <Configuration Condition="'$(Configuration)'==''" >Release</Configuration>
-    <BuildDir>$(BaseDir)build\</BuildDir>
+    <BuildDir>$(BaseDir)..\build\</BuildDir>
     <PackageDir>$(BuildDir)Packages\</PackageDir>
     <SolutionFile>$(BaseDir)RazorSharpEmail.sln</SolutionFile>
-    <MSBuildExtensions>$(MSBuildProjectDirectory)\Source\build\MSBuild.Community.Tasks.dll</MSBuildExtensions>
+    <MSBuildExtensions>$(MSBuildProjectDirectory)\Source\.build\MSBuild.Community.Tasks.dll</MSBuildExtensions>
     <Version Condition="$(Version)==''">0.0.0.0</Version>
   </PropertyGroup>
  
@@ -41,6 +41,6 @@
       Value="%(AsmInfo.Version)" />
  
     <Exec WorkingDirectory="$(BuildDir)Packages" 
-          Command="$(MSBuildProjectDirectory)\Lib\Nuget\nuget.exe pack $(PackageDir)temp\RazorSharpEmail\RazorSharpEmail.nuspec" />
+          Command="$(MSBuildProjectDirectory)\Source\.nuget\nuget.exe pack $(PackageDir)temp\RazorSharpEmail\RazorSharpEmail.nuspec" />
   </Target>
 </Project>
