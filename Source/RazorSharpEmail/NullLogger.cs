@@ -4,8 +4,8 @@ namespace RazorSharpEmail
 {
     public class NullLogger : ILogger
     {
-        static readonly Lazy<ILogger> _instance = new Lazy<ILogger>(() => new NullLogger());
-        public static ILogger Instance { get { return _instance.Value; } }
+        static readonly Lazy<ILogger> LoggerInstance = new Lazy<ILogger>(() => new NullLogger());
+        public static ILogger Instance { get { return LoggerInstance.Value; } }
 
         private NullLogger()
         {
