@@ -8,13 +8,11 @@ namespace RazorSharpEmail
 	{
 		private readonly IEmailResourceProvider _emailResourceProvider;
 		private readonly ITemplateService _templateService;
-		public ILogger Logger { get; set; }
 
 		public RazorEmailTemplateInitializer(IEmailResourceProvider emailResourceProvider, ITemplateService templateService)
 		{
 			_emailResourceProvider = emailResourceProvider;
 			_templateService = templateService;
-			Logger = NullLogger.Instance;
 		}
 
 		public void CompileTemplatesForTypesInSameNamespaceAs<TModel>(string typesEndingWith = "Model")
@@ -38,26 +36,21 @@ namespace RazorSharpEmail
 
 		private void CompileLayouts(string languageCode)
 		{
-			Logger.Info(() => "Compiling PlainText Razor Layout for {0}".FormatWith(languageCode));
 			var plainTextLayoutTemplate = _emailResourceProvider.GetPlainTextLayoutTemplate();
 			_templateService.Compile(plainTextLayoutTemplate, typeof(string), GetPlainTextLayoutName(languageCode));
 
-			Logger.Info(() => "Compiling Html Razor Layout for {0}".FormatWith(languageCode));
 			var htmlLayoutTemplate = _emailResourceProvider.GetHtmlLayoutTemplate();
 			_templateService.Compile(htmlLayoutTemplate, typeof(string), GetHtmlLayoutName(languageCode));
 		}
 
 		private void CompileTemplatesFor(Type modelType, string languageCode)
 		{
-			Logger.Info(() => "Compiling Razor Subject Template for {0} in {1}".FormatWith(modelType.Name, languageCode));
 			var subjectTemplate = _emailResourceProvider.GetSubjectTemplate(modelType);
 			_templateService.Compile(subjectTemplate, modelType, GetSubjectTemplateName(modelType, languageCode));
 
-			Logger.Info(() => "Compiling Razor PlainText Template for {0} in {1}".FormatWith(modelType.Name, languageCode));
 			var plainTextTemplate = _emailResourceProvider.GetPlainTextBodyTemplate(modelType);
 			_templateService.Compile(plainTextTemplate, modelType, GetPlainTextTemplateName(modelType, languageCode));
 
-			Logger.Info(() => "Compiling Razor Html Template for {0} in {1}".FormatWith(modelType.Name, languageCode));
 			var htmlTemplate = _emailResourceProvider.GetHtmlBodyTemplate(modelType);
 			_templateService.Compile(htmlTemplate, modelType, GetHtmlTemplateName(modelType, languageCode));
 		}

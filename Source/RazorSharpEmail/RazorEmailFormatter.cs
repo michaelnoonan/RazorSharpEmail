@@ -10,13 +10,10 @@ namespace RazorSharpEmail
 		private readonly ITemplateService _templateService;
 		private readonly IEmailTemplateInitializer _emailTemplateInitializer;
 
-		public ILogger Logger { get; set; }
-
 		public RazorEmailFormatter(ITemplateService templateService, IEmailTemplateInitializer emailTemplateInitializer)
 		{
 			_templateService = templateService;
 			_emailTemplateInitializer = emailTemplateInitializer;
-			Logger = NullLogger.Instance;
 		}
 
 		public MailMessage BuildMailMessageFrom<TModel>(TModel model)
@@ -26,8 +23,6 @@ namespace RazorSharpEmail
 
 		public TemplatedEmail BuildTemplatedEmailFrom<TModel>(TModel model)
 		{
-			Logger.Info(() => "Templating email for {0}".FormatWith(typeof(TModel).Name));
-
 			var language = EnsureCurrentLanguageScope();
 
 			var templatedEmail = new TemplatedEmail();
@@ -44,8 +39,6 @@ namespace RazorSharpEmail
 
 		public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail)
 		{
-			Logger.Info(() => "Constructing MailMessage with subject '{0}'".FormatWith(templatedEmail.Subject));
-
 			// Create the mail message and set the subject
 			var mailMessage = new MailMessage { Subject = templatedEmail.Subject };
 
