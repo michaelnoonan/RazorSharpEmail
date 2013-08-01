@@ -13,8 +13,11 @@
     <releaseNotes>The initial release to Nuget.</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>Email,Templating,Razor</tags>
+	<dependencies>
+      <dependency id="RazorEngine" version="3.3.0" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\RazorSharpEmail.pdb" target="lib\net45" />
+    <file src="lib\net45\RazorSharpEmail.pdb" target="lib\net45" />
   </files>
 </package>

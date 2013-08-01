@@ -58,6 +58,8 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EmailTemplate.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="NullLogger.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="EmbeddedEmailResourceProvider.cs" />
     <Compile Include="IEmailFormatter.cs" />
@@ -71,7 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="RazorSharpEmail.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
