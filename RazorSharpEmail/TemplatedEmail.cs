@@ -1,6 +1,6 @@
 namespace RazorSharpEmail
 {
-	public class TemplatedEmail
+    public class TemplatedEmail
 	{
 		public string Subject { get; set; }
 		public string PlainTextBody { get; set; }

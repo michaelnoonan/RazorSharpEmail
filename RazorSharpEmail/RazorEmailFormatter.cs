@@ -16,39 +16,58 @@ namespace RazorSharpEmail
 			_emailTemplateInitializer = emailTemplateInitializer;
 		}
 
-		public MailMessage BuildMailMessageFrom<TModel>(TModel model)
+	    public MailMessage BuildMailMessageFrom<TModel>(TModel model, DynamicViewBag viewBag = null)
+	    {
+            return BuildMailMessageFrom(BuildTemplatedEmailFrom(model, viewBag));
+        }
+
+	    public TemplatedEmail BuildTemplatedEmailFrom<TModel>(TModel model, DynamicViewBag viewBag = null)
 		{
-			return BuildMailMessageFrom(BuildTemplatedEmailFrom(model));
-		}
+	        var language = EnsureCurrentLanguageScope();
 
-		public TemplatedEmail BuildTemplatedEmailFrom<TModel>(TModel model)
-		{
-			var language = EnsureCurrentLanguageScope();
+	        var templatedEmail = new TemplatedEmail();
 
-			var templatedEmail = new TemplatedEmail();
+            if (viewBag == null) viewBag = new DynamicViewBag();
 
-			// Parse the email subject and cleanse newline characters (otherwise the email class will throw)
-			templatedEmail.Subject = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetSubjectTemplateName(typeof(TModel), language), model, viewBag: null)).CleanseCRLF();
+	        // Parse the email subject and cleanse newline characters (otherwise the email class will throw)
+			templatedEmail.Subject = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetSubjectTemplateName(typeof(TModel), language), model, viewBag: viewBag)).CleanseCRLF();
 
 			// Parse the body in both formats which will be wrapped in the layouts in a separate step
-			templatedEmail.PlainTextBody = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetPlainTextTemplateName(typeof(TModel), language), model, viewBag: null));
-			templatedEmail.HtmlBody = _templateService.Run(_emailTemplateInitializer.GetHtmlTemplateName(typeof(TModel), language), model, viewBag: null);
+			templatedEmail.PlainTextBody = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetPlainTextTemplateName(typeof(TModel), language), model, viewBag: viewBag));
+			templatedEmail.HtmlBody = _templateService.Run(_emailTemplateInitializer.GetHtmlTemplateName(typeof(TModel), language), model, viewBag: viewBag);
 
 			return templatedEmail;
 		}
 
-		public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail)
-		{
+        public TemplatedEmailAfterLayout LayoutTemplatedEmail(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
+        {
+            var templatedEmailAfterLayout = new TemplatedEmailAfterLayout();
+
+            if (viewBag == null) viewBag = new DynamicViewBag();
+
+            templatedEmailAfterLayout.Subject = templatedEmail.Subject;
+            templatedEmailAfterLayout.PlainText = LayoutPlainTextContent(templatedEmail, viewBag);
+            templatedEmailAfterLayout.Html = LayoutHtmlContent(templatedEmail, viewBag);
+
+            return templatedEmailAfterLayout;
+        }
+
+        public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
+        {
+            if (viewBag == null) viewBag = new DynamicViewBag();
+            return BuildMailMessageFrom(LayoutTemplatedEmail(templatedEmail), viewBag);
+        }
+
+        public MailMessage BuildMailMessageFrom(TemplatedEmailAfterLayout templatedEmailAfterLayout)
+        {
 			// Create the mail message and set the subject
-			var mailMessage = new MailMessage { Subject = templatedEmail.Subject };
+			var mailMessage = new MailMessage { Subject = templatedEmailAfterLayout.Subject };
 
 			// Create the plain text view
-			var plainTextAfterLayout = LayoutPlainTextContent(templatedEmail);
-			var plainTextView = AlternateView.CreateAlternateViewFromString(plainTextAfterLayout, null, "text/plain");
+			var plainTextView = AlternateView.CreateAlternateViewFromString(templatedEmailAfterLayout.PlainText, null, "text/plain");
 
 			// Create the html view
-			var htmlTextAfterLayout = LayoutHtmlContent(templatedEmail);
-			var htmlView = AlternateView.CreateAlternateViewFromString(htmlTextAfterLayout, null, "text/html");
+			var htmlView = AlternateView.CreateAlternateViewFromString(templatedEmailAfterLayout.Html, null, "text/html");
 
 			// Add the views
 			mailMessage.AlternateViews.Add(plainTextView);
@@ -57,16 +76,16 @@ namespace RazorSharpEmail
 			return mailMessage;
 		}
 
-		private string LayoutPlainTextContent(TemplatedEmail templatedEmail)
+        private string LayoutPlainTextContent(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
 		{
 			var language = EnsureCurrentLanguageScope();
-			return _templateService.Run(_emailTemplateInitializer.GetPlainTextLayoutName(language), templatedEmail.PlainTextBody, viewBag: null);
+            return _templateService.Run(_emailTemplateInitializer.GetPlainTextLayoutName(language), templatedEmail.PlainTextBody, viewBag: viewBag);
 		}
 
-		private string LayoutHtmlContent(TemplatedEmail templatedEmail)
+        private string LayoutHtmlContent(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
 		{
 			var language = EnsureCurrentLanguageScope();
-			return _templateService.Run(_emailTemplateInitializer.GetHtmlLayoutName(language), templatedEmail.HtmlBody, viewBag: null);
+            return _templateService.Run(_emailTemplateInitializer.GetHtmlLayoutName(language), templatedEmail.HtmlBody, viewBag: viewBag);
 		}
 
 		private static string EnsureCurrentLanguageScope()

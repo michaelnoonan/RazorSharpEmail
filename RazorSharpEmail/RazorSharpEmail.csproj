@@ -68,6 +68,7 @@
     <Compile Include="RazorEmailFormatter.cs" />
     <Compile Include="RazorEmailTemplateInitializer.cs" />
     <Compile Include="TemplatedEmail.cs" />
+    <Compile Include="TemplatedEmailAfterLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

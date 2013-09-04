@@ -36,7 +36,7 @@ namespace RazorSharpEmail
 
 		private string[] GetCandidateTemplates()
 		{
-			return _resourceAssembly.GetManifestResourceNames().Where(x => x.StartsWith(GetCurrentCultureTemplateNamespace())).ToArray();
+			return _resourceAssembly.GetManifestResourceNames().Where(x => x.StartsWith(GetCurrentCultureTemplateNamespace() + ".")).ToArray();
 		}
 
 		public string GetTemplate(string name)

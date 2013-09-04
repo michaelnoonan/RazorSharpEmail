@@ -1,6 +1,8 @@
+using System.Runtime.CompilerServices;
 using ApprovalTests.Reporters;
 using Email.Models;
 using NUnit.Framework;
+using RazorEngine.Templating;
 
 namespace RazorSharpEmail.Tests
 {
@@ -25,8 +27,10 @@ namespace RazorSharpEmail.Tests
         }
 
         [Test]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Given_a_model_the_email_should_format_the_email_correctly()
         {
+            var viewBag = new DynamicViewBag();
             var email = _emailFormatter.BuildTemplatedEmailFrom(
                 new SimpleEmailModel
                 {
@@ -34,9 +38,26 @@ namespace RazorSharpEmail.Tests
                     ReferenceNumber = "REF123456",
                     Message = "Hello World!",
                     Url = "http://google.com"
-                });
+                }, viewBag);
 
             ApprovalTests.Approvals.Verify(email.Everything());
+        }
+
+        [Test]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void Given_a_model_the_email_should_format_and_layout_the_email_correctly()
+        {
+            var viewBag = new DynamicViewBag();
+            var templatedEmail = _emailFormatter.BuildTemplatedEmailFrom(
+                new SimpleEmailModel
+                {
+                    RecipientFirstName = "Michael",
+                    ReferenceNumber = "REF123456",
+                    Message = "Hello World!",
+                    Url = "http://google.com"
+                }, viewBag);
+
+            ApprovalTests.Approvals.Verify(_emailFormatter.LayoutTemplatedEmail(templatedEmail, viewBag).Everything());
         }
     }
 }
