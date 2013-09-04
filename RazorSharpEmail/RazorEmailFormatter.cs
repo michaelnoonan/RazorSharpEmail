@@ -39,7 +39,13 @@ namespace RazorSharpEmail
 			return templatedEmail;
 		}
 
-        public TemplatedEmailAfterLayout LayoutTemplatedEmail(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
+	    public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
+	    {
+	        if (viewBag == null) viewBag = new DynamicViewBag();
+	        return BuildMailMessageFrom(LayoutTemplatedEmail(templatedEmail, viewBag));
+	    }
+
+	    public TemplatedEmailAfterLayout LayoutTemplatedEmail(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
         {
             var templatedEmailAfterLayout = new TemplatedEmailAfterLayout();
 
@@ -52,13 +58,7 @@ namespace RazorSharpEmail
             return templatedEmailAfterLayout;
         }
 
-        public MailMessage BuildMailMessageFrom(TemplatedEmail templatedEmail, DynamicViewBag viewBag = null)
-        {
-            if (viewBag == null) viewBag = new DynamicViewBag();
-            return BuildMailMessageFrom(LayoutTemplatedEmail(templatedEmail), viewBag);
-        }
-
-        public MailMessage BuildMailMessageFrom(TemplatedEmailAfterLayout templatedEmailAfterLayout)
+	    public MailMessage BuildMailMessageFrom(TemplatedEmailAfterLayout templatedEmailAfterLayout)
         {
 			// Create the mail message and set the subject
 			var mailMessage = new MailMessage { Subject = templatedEmailAfterLayout.Subject };

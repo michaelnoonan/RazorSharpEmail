@@ -211,8 +211,7 @@
                                                     <tr>
                                                         <td valign="top">
                                                             <div>
-                                                                
-<h1 style="color: red">Alert!!!</h1>
+                                                                <h1 style="color: red">Alert!!!</h1>
 <h3>Your reference: REF123456</h3>
 <p>Dear Michael,</p>
 <p>Hello World!</p>
