@@ -30,7 +30,7 @@ namespace RazorSharpEmail.Tests
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Given_a_model_the_email_should_format_the_email_correctly()
         {
-            var viewBag = new DynamicViewBag();
+            var viewBag = new DynamicViewBag(null);
             var email = _emailFormatter.BuildTemplatedEmailFrom(
                 new SimpleEmailModel
                 {
@@ -47,7 +47,7 @@ namespace RazorSharpEmail.Tests
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Given_a_model_the_email_should_format_and_layout_the_email_correctly()
         {
-            var viewBag = new DynamicViewBag();
+            var viewBag = new DynamicViewBag(null);
             var templatedEmail = _emailFormatter.BuildTemplatedEmailFrom(
                 new SimpleEmailModel
                 {

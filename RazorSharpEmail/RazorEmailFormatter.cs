@@ -27,7 +27,7 @@ namespace RazorSharpEmail
 
 	        var templatedEmail = new TemplatedEmail();
 
-            if (viewBag == null) viewBag = new DynamicViewBag();
+            if (viewBag == null) viewBag = new DynamicViewBag(null);
 
 	        // Parse the email subject and cleanse newline characters (otherwise the email class will throw)
 			templatedEmail.Subject = HttpUtility.HtmlDecode(_templateService.Run(_emailTemplateInitializer.GetSubjectTemplateName(typeof(TModel), language), model, viewBag: viewBag)).CleanseCRLF();
@@ -49,7 +49,7 @@ namespace RazorSharpEmail
         {
             var templatedEmailAfterLayout = new TemplatedEmailAfterLayout();
 
-            if (viewBag == null) viewBag = new DynamicViewBag();
+            if (viewBag == null) viewBag = new DynamicViewBag(null);
 
             templatedEmailAfterLayout.Subject = templatedEmail.Subject;
             templatedEmailAfterLayout.PlainText = LayoutPlainTextContent(templatedEmail, viewBag);
